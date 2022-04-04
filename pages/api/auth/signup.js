@@ -13,7 +13,7 @@ const handler = async (req, res) => {
 
   if (req.method == 'POST') {
     const { email, password } = req.body
-    const hashedPassword = hashPassword(password)
+    const hashedPassword = await hashPassword(password)
 
     if (
       !email ||
