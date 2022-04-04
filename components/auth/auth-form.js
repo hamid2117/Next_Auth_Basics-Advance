@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { signIn } from 'next-auth/react'
 import classes from './auth-form.module.css'
 
 function AuthForm() {
@@ -11,23 +12,32 @@ function AuthForm() {
     setIsLogin((prevState) => !prevState)
   }
 
-  const sendData = (email, password) => {
-    const data = JSON.stringify({ email, password })
-    const url = isLogin ? '/api/auth/signin' : '/api/auth/signup'
-    console.log(url)
-    fetch(url, {
-      method: 'POST',
-      body: data,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  const SignInFunc = async (email, password) => {
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
     })
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    console.log(result)
+  }
+
+  const sendData = async (email, password) => {
+    const data = JSON.stringify({ email, password })
+    isLogin
+      ? await SignInFunc(email, password)
+      : fetch('/api/auth/signup', {
+          method: 'POST',
+          body: data,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((data) => {
+            console.log(data)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
   }
   const handleSubmit = (e) => {
     e.preventDefault()

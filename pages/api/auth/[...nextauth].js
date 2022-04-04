@@ -1,9 +1,14 @@
 import NextAuth from 'next-auth/next'
+import CredentialsProvider from 'next-auth/providers/credentials'
+
 import { connectToDatabase } from '../../../helper/db'
 import { ComparePassword } from '../../../helper/auth'
 export default NextAuth({
+  session: {
+    jwt: true,
+  },
   providers: [
-    Providers.Credientials({
+    CredentialsProvider({
       async authorize(credientials) {
         const client = await connectToDatabase()
         const userCollections = await client.db().collection('user')
