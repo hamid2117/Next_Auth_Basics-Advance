@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react'
 import { signIn } from 'next-auth/react'
 import classes from './auth-form.module.css'
-
+import { useRouter } from 'next/router'
 function AuthForm() {
+  const router = useRouter()
   const [isLogin, setIsLogin] = useState(true)
   const [notify, setNotify] = useState(false)
   const emailInput = useRef()
@@ -18,7 +19,9 @@ function AuthForm() {
       email,
       password,
     })
-    console.log(result)
+    if (!result.error) {
+      router.replace('/profile')
+    }
   }
 
   const sendData = async (email, password) => {

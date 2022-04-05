@@ -2,9 +2,9 @@ import { connectToDatabase } from '../../../helper/db'
 import { hashPassword } from '../../../helper/auth'
 
 const handler = async (req, res) => {
-  let db
+  let db, client
   try {
-    let client = await connectToDatabase()
+    client = await connectToDatabase()
     db = client.db()
   } catch (error) {
     res.status(403).json({ message: "can't able to connect with database" })
@@ -21,7 +21,16 @@ const handler = async (req, res) => {
       !password ||
       password.trim().length < 7
     ) {
+      client.close()
       res.status(430).json({ message: 'Please send valid email and password ' })
+      return
+    }
+
+    const alreadyExist = db.collection('user').findOne({ email })
+
+    if (alreadyExist) {
+      res.status(440).json({ message: 'This account is already exists' })
+      client.close()
       return
     }
 
@@ -30,7 +39,7 @@ const handler = async (req, res) => {
       password: hashedPassword,
     }
     const result = await db.collection('user').insertOne(userData)
-
+    client.close()
     res.status(201).json({ message: 'user is created successfully . !!!!' })
   }
 }

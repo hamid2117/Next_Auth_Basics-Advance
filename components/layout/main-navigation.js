@@ -1,9 +1,12 @@
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import classes from './main-navigation.module.css'
 
 function MainNavigation() {
-  const [session, loading] = useSession()
+  const { data: session, status } = useSession()
+  const handleLogout = () => {
+    signOut()
+  }
   return (
     <header className={classes.header}>
       <Link href='/'>
@@ -18,13 +21,16 @@ function MainNavigation() {
               <Link href='/auth'>Login</Link>
             </li>
           )}
-
-          <li>
-            <Link href='/profile'>Profile</Link>
-          </li>
-          <li>
-            <button>Logout</button>
-          </li>
+          {session && (
+            <>
+              <li>
+                <Link href='/profile'>Profile</Link>
+              </li>
+              <li>
+                <button onClick={handleLogout}>Logout</button>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
