@@ -11,7 +11,7 @@ export default NextAuth({
     CredentialsProvider({
       async authorize(credientials) {
         const client = await connectToDatabase()
-        const userCollections = await client.db().collection('user')
+        const userCollections = client.db().collection('user')
         const userData = await userCollections.findOne({
           email: credientials.email,
         })
