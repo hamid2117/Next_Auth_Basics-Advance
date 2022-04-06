@@ -7,6 +7,7 @@ function MainNavigation() {
   const handleLogout = () => {
     signOut()
   }
+
   return (
     <header className={classes.header}>
       <Link href='/'>

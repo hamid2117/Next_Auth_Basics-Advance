@@ -8,7 +8,7 @@ const helper = async (req, res) => {
 
   const session = await getSession({ req }) // to check the cookies is valid or not
   if (!session) {
-    res.status(403).json({ message: 'user is not authorized . ' })
+    res.status(402).json({ message: 'user is not authorized . ' })
     return
   }
   const { newPassword, oldPassword } = req.body
@@ -20,7 +20,7 @@ const helper = async (req, res) => {
   const isValid = await ComparePassword(oldPassword, userData.password)
   if (!isValid) {
     client.close()
-    res.status(408).json({ message: 'Old password is wronge . ' })
+    res.status(403).json({ message: 'Old password is wronge . ' })
     return
   }
 

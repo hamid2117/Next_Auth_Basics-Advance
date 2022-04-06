@@ -29,7 +29,7 @@ const handler = async (req, res) => {
     const alreadyExist = db.collection('user').findOne({ email })
 
     if (alreadyExist) {
-      res.status(440).json({ message: 'This account is already exists' })
+      res.status(409).json({ message: 'This account is already exists' })
       client.close()
       return
     }
