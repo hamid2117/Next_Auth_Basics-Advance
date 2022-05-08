@@ -26,7 +26,7 @@ const handler = async (req, res) => {
       return
     }
 
-    const alreadyExist = db.collection('user').findOne({ email })
+    const alreadyExist = await db.collection('user').findOne({ email })
 
     if (alreadyExist) {
       res.status(409).json({ message: 'This account is already exists' })
