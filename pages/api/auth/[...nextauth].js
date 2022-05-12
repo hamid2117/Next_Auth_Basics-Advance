@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { connectToDatabase } from '../../../helper/db'
 import { ComparePassword } from '../../../helper/auth'
+
 export default NextAuth({
   session: {
     jwt: true,
